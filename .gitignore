@@ -1,0 +1,26 @@
+node_modules
+# Keep environment variables out of version control
+.env
+
+# Ignorar archivos temporales y de compilación
+node_modules/
+package-lock.json
+yarn.lock
+
+# Archivos generados por la ejecución de la app
+dist/
+build/
+coverage/
+
+# Entorno de desarrollo
+.env
+.env.local
+.env.*
+
+# Logs
+logs/
+
+# Caché y archivos temporales de IDEs
+.idea/
+.vscode/
+.cache/

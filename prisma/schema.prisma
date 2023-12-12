@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Genero {
+  id        Int      @id @default(autoincrement())
+  name      String
+  Artista   Artista? @relation(fields: [artistaId], references: [id])
+  artistaId String?
+}
+
+model Artista {
+  id      String   @id @default(uuid())
+  nombre  String
+  generos Genero[]
+  imagen  String
+
+  albums Album[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  Cancion   Cancion[]
+}
+
+model Album {
+  id     String    @id @default(uuid())
+  name   String     
+  rating Float     @default(0)
+  artist Artista   @relation(fields: [artistaId], references: [id])
+  songs  Cancion[]
+
+  isSingle Boolean @default(false)
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  artistaId String
+}
+
+model Cancion {
+  id                  String             @id @default(uuid())
+  titulo              String
+  artista             Artista            @relation(fields: [artistaId], references: [id])
+  album               Album              @relation(fields: [albumId], references: [id])
+  genero              String
+  duracion            Float
+  letra               String             @db.LongText
+  imagen              String             @db.LongText
+  artistaId           String
+  albumId             String
+  Reproduccion        Reproduccion[]
+  ListaReproduccion   ListaReproduccion? @relation(fields: [listaReproduccionId], references: [id])
+  listaReproduccionId String?
+}
+
+model Usuario {
+  id       String @id @default(uuid())
+  username String @unique
+  correo   String @unique
+  password String
+
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @updatedAt @map("updated_at")
+  deletedAt         DateTime?           @map("deleted_at")
+  Reproduccion      Reproduccion[]
+  ListaReproduccion ListaReproduccion[]
+}
+
+model Reproduccion {
+  id                String   @id @default(uuid())
+  usuario           Usuario  @relation(fields: [usuarioId], references: [id])
+  cancion           Cancion  @relation(fields: [cancionId], references: [id])
+  duracion          Float
+  fechaReproduccion DateTime
+  usuarioId         String
+  cancionId         String
+}
+
+model ListaReproduccion {
+  id        String    @id @default(uuid())
+  nombre    String
+  usuario   Usuario   @relation(fields: [usuarioId], references: [id])
+  canciones Cancion[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  usuarioId String
+}
