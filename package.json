@@ -2,8 +2,11 @@
   "name": "api-recomendacion-musical",
   "version": "1.0.0",
   "description": "api para el proyecto de tesis de algoritmo de recomendacion musical",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "build": "tsc",
+    "prestart": "npm run build",
+    "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "prisma": {
@@ -14,6 +17,7 @@
   "dependencies": {
     "@prisma/client": "^5.7.0",
     "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "passport": "^0.7.0",
