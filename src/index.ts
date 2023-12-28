@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from 'dotenv';
 import songRoutes from './routes/song'
+import albumRoutes from './routes/album'
 import authRoutes from './routes/auth'
 
 const cors = require('cors')
@@ -19,7 +20,8 @@ app.get('/',(req, res)=>{  console.log("prueba de ruta");
 })
 
 app.use('/auth', authRoutes);
-// app.use('/songs', songRoutes);
+app.use('/songs', songRoutes);
+app.use('/albums', albumRoutes);
 
 app.use('*',(req,res)=>res.status(404).json({error:"not found"}))
 

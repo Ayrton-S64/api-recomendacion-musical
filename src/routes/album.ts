@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { list } from '../controllers/songs'
+import { list } from '../controllers/album'
 
 const router = Router();
 

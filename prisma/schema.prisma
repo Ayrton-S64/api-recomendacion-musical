@@ -11,10 +11,10 @@ datasource db {
 }
 
 model Genero {
-  id        Int      @id @default(autoincrement())
-  name      String
-  Artista   Artista? @relation(fields: [artistaId], references: [id])
+  name      String    @id
+  Artista   Artista?  @relation(fields: [artistaId], references: [id])
   artistaId String?
+  Cancion   Cancion[]
 }
 
 model Artista {
@@ -28,12 +28,11 @@ model Artista {
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
-  Cancion   Cancion[]
 }
 
 model Album {
   id     String    @id @default(uuid())
-  name   String     
+  name   String
   rating Float     @default(0)
   artist Artista   @relation(fields: [artistaId], references: [id])
   songs  Cancion[]
@@ -49,17 +48,16 @@ model Album {
 model Cancion {
   id                  String             @id @default(uuid())
   titulo              String
-  artista             Artista            @relation(fields: [artistaId], references: [id])
   album               Album              @relation(fields: [albumId], references: [id])
-  genero              String
+  genero              Genero             @relation(fields: [generoName], references: [name])
   duracion            Float
-  letra               String             @db.LongText
+  letra               String?            @db.LongText
   imagen              String             @db.LongText
-  artistaId           String
   albumId             String
   Reproduccion        Reproduccion[]
   ListaReproduccion   ListaReproduccion? @relation(fields: [listaReproduccionId], references: [id])
   listaReproduccionId String?
+  generoName          String
 }
 
 model Usuario {
