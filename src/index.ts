@@ -28,7 +28,6 @@ app.use('/artists', artistRoutes);
 app.use('*',(req,res)=>res.status(404).json({error:"not found"}))
 
 app.listen(3000, ()=>{
-  console.log(authRoutes.stack)
-  // console.log(app._router.stack)
+  console.log(artistRoutes.stack)
   console.log('the server is running');
 })
