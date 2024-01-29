@@ -1,96 +1,116 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model Genero {
-  name      String    @id
-  Artista   Artista?  @relation(fields: [artistaId], references: [id])
-  artistaId String?
-  Cancion   Cancion[]
-}
-
 model Artista {
-  id      String   @id @default(uuid())
-  nombre  String
-  generos Genero[]
-  imagen  String
-
-  albums Album[]
-
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
+  nombre         String
+  imagen         String?
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime?        @updatedAt @map("updated_at")
+  deletedAt      DateTime?        @map("deleted_at")
+  id             Int              @id @default(autoincrement())
+  albums         Album[]
+  ArtistaCancion ArtistaCancion[]
 }
 
 model Album {
-  id     String    @id @default(uuid())
-  name   String
-  rating Float     @default(0)
-  artist Artista   @relation(fields: [artistaId], references: [id])
-  songs  Cancion[]
-
-  isSingle Boolean @default(false)
-
+  name      String
+  rating    Float?    @default(0)
+  isSingle  Boolean?  @default(false)
   createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
-  artistaId String
+  code      String?
+  id        Int       @id @default(autoincrement())
+  artistaId Int
+  artist    Artista   @relation(fields: [artistaId], references: [id])
+  canciones Cancion[]
+}
+
+model ArtistaCancion {
+  id        Int     @id @default(autoincrement())
+  artistaId Int
+  cancionId Int
+  artista   Artista @relation(fields: [artistaId], references: [id])
+  cancion   Cancion @relation(fields: [cancionId], references: [id])
 }
 
 model Cancion {
-  id                  String             @id @default(uuid())
-  titulo              String
-  album               Album              @relation(fields: [albumId], references: [id])
-  genero              Genero             @relation(fields: [generoName], references: [name])
-  duracion            Float
-  letra               String?            @db.LongText
-  imagen              String             @db.LongText
-  albumId             String
-  Reproduccion        Reproduccion[]
-  ListaReproduccion   ListaReproduccion? @relation(fields: [listaReproduccionId], references: [id])
-  listaReproduccionId String?
-  generoName          String
+  titulo                   String
+  genero                   String?
+  urlImagen                String?
+  realaseDate              DateTime
+  popularity               Int?
+  duration                 Int?
+  url                      String?
+  danceability             Float?
+  energy                   Float?
+  key                      Int?
+  loudness                 Float?
+  mode                     Int?
+  speechiness              Float?
+  acousticness             Float?
+  instrumentalness         Float?
+  liveness                 Float?
+  valence                  Float?
+  tempo                    Float?
+  code                     String?
+  id                       Int                        @id @default(autoincrement())
+  createdAt                DateTime                   @default(now()) @map("created_at")
+  deletedAt                DateTime?                  @map("deleted_at")
+  updatedAt                DateTime?                  @updatedAt @map("updated_at")
+  albumId                  Int?
+  ArtistaCancion           ArtistaCancion[]
+  Album                    Album?                     @relation(fields: [albumId], references: [id])
+  CancionListaReproduccion CancionListaReproduccion[]
+  Reproduccion             Reproduccion[]
 }
 
 model Usuario {
-  id       String @id @default(uuid())
-  username String @unique
-  correo   String @unique
-  password String
-
+  username          String              @unique
+  correo            String              @unique
+  password          String
   createdAt         DateTime            @default(now()) @map("created_at")
   updatedAt         DateTime            @updatedAt @map("updated_at")
   deletedAt         DateTime?           @map("deleted_at")
-  Reproduccion      Reproduccion[]
+  id                Int                 @id @default(autoincrement())
   ListaReproduccion ListaReproduccion[]
+  Reproduccion      Reproduccion[]
 }
 
 model Reproduccion {
-  id                String   @id @default(uuid())
-  usuario           Usuario  @relation(fields: [usuarioId], references: [id])
-  cancion           Cancion  @relation(fields: [cancionId], references: [id])
   duracion          Float
   fechaReproduccion DateTime
-  usuarioId         String
-  cancionId         String
+  id                Int      @id @default(autoincrement())
+  usuarioId         Int
+  cancionId         Int
+  cancion           Cancion  @relation(fields: [cancionId], references: [id])
+  usuario           Usuario  @relation(fields: [usuarioId], references: [id])
+}
+
+model CancionListaReproduccion {
+  id                  Int               @id @default(autoincrement())
+  createdAt           DateTime          @default(now()) @map("created_at")
+  updatedAt           DateTime          @updatedAt @map("updated_at")
+  deletedAt           DateTime?         @map("deleted_at")
+  cancionId           Int
+  listaReproduccionId Int
+  cancion             Cancion           @relation(fields: [cancionId], references: [id])
+  listaReproduccion   ListaReproduccion @relation(fields: [listaReproduccionId], references: [id])
 }
 
 model ListaReproduccion {
-  id        String    @id @default(uuid())
-  nombre    String
-  usuario   Usuario   @relation(fields: [usuarioId], references: [id])
-  canciones Cancion[]
-
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
-  usuarioId String
+  nombre                   String
+  createdAt                DateTime                   @default(now()) @map("created_at")
+  updatedAt                DateTime                   @updatedAt @map("updated_at")
+  deletedAt                DateTime?                  @map("deleted_at")
+  id                       Int                        @id @default(autoincrement())
+  usuarioId                Int
+  CancionListaReproduccion CancionListaReproduccion[]
+  usuario                  Usuario                    @relation(fields: [usuarioId], references: [id])
 }

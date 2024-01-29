@@ -25,3 +25,18 @@ export async function getUserByUsername(username:string){
     throw error;
   }
 }
+
+export async function getUserHistory(userId:number){
+  try {
+    return await prisma.reproduccion.findMany({
+      where:{
+        usuarioId: userId,
+      },
+      include:{
+        cancion: true,
+      }
+    })
+  } catch (error) {
+    throw error;
+  }
+}

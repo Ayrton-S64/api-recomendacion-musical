@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Album, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -9,15 +9,35 @@ export async function getAll(){
     },
     include:{
       artist: true,
-      songs: true,
+      canciones: true,
     }
   });
 }
 
-export async function getSingles(){
+export async function getByType(isSingle: boolean){
   return await prisma.album.findMany({
     where:{
-      isSingle: true,
+      isSingle,
+      deletedAt: null
+    },
+    include:{
+      artist: true,
+      canciones: true,
     }
   })
 }
+
+export async function getByCode(code: string) {
+  return await prisma.album.findFirst({
+    where:{
+      code,
+      deletedAt: null,
+    },
+    include:{
+      artist: true,
+      canciones: true,
+    }
+  })
+}
+
+

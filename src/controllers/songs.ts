@@ -5,7 +5,7 @@ export const list = async(req: Request, res: Response)=>{
   console.log('processing list songs')  
   try {
     const response = await listAll();
-    console.log('sending response albums')
+    console.log('sending response songs', response);
     res.send({
       status: true,
       code: 200,
