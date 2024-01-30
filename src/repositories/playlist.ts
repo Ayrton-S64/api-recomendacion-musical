@@ -43,3 +43,20 @@ export async function getById(listId: number){
   });
 }
 
+export async function getByUserId(userId: number){
+  return await prisma.listaReproduccion.findMany({
+    where:{
+      usuarioId: userId,
+      deletedAt: null,
+    },
+    include:{
+      CancionListaReproduccion:{
+        include: {
+          cancion: true,
+        }
+      }
+    }
+  });
+}
+
+

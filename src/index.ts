@@ -4,6 +4,7 @@ import artistRoutes from './routes/artist'
 import songRoutes from './routes/song'
 import albumRoutes from './routes/album'
 import authRoutes from './routes/auth'
+import playlistRoutes from './routes/playlist'
 
 const cors = require('cors')
 
@@ -24,10 +25,11 @@ app.use('/auth', authRoutes);
 app.use('/songs', songRoutes);
 app.use('/albums', albumRoutes);  
 app.use('/artists', artistRoutes);  
+app.use('/playlists', playlistRoutes);  
 
 app.use('*',(req,res)=>res.status(404).json({error:"not found"}))
 
 app.listen(3000, ()=>{
-  console.log(artistRoutes.stack)
+  // console.log(artistRoutes.stack)
   console.log('the server is running');
 })
