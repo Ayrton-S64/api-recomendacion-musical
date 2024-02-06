@@ -9,7 +9,7 @@ router.get(
 )
 
 router.get(
-  '/recomendations',
+  '/recommendations',
   recommendSongs,
 )
 
