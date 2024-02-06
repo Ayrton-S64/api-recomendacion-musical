@@ -13,6 +13,7 @@ export async function search(query:string){
 }
 
 export async function getRecommendation(userId: number, amount: number = 5){
+  console.log(' in service getRecommendation');
   // heads
   // Track Name	Artists	Album Name	Album Id	Track ID	Popularity	Release Date	Duration (ms)	Explicit URLs	Danceability	Energy	Key	Loudness	Mode	Speechiness	Acousticness	Instrumentalness	Liveness	Valence	Tempo
   const songsData = await getAll();
@@ -40,6 +41,6 @@ export async function getRecommendation(userId: number, amount: number = 5){
       tempo: song.tempo,
     }
   });
-
+  console.log('prev return');
   return mappedData;
 }

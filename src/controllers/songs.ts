@@ -24,5 +24,23 @@ export const list = async(req: Request, res: Response)=>{
 }
 
 export const recommendSongs =  async(req: Request, res: Response)=>{
-  return await getRecommendation(1);
+  console.log('inside controller recommendSongs');
+  try {
+    const response = await getRecommendation(1);
+    console.log('sending recommended songs', response);
+    res.send({
+      status: true,
+      code: 200,
+      error: null,
+      data: response
+    }).status(200);
+  } catch (error) {
+    console.log('error ', error)
+    res.send({
+      status: false,
+      code: 400,
+      error: error,
+      data: null
+    }).status(400);    
+  }
 }
