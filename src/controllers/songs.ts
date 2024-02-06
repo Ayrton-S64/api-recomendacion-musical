@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { listAll, getRecommend } from "../services/songs";
+import { listAll, getRecommendation } from "../services/songs";
 
 export const list = async(req: Request, res: Response)=>{
   console.log('processing list songs')  
@@ -24,5 +24,5 @@ export const list = async(req: Request, res: Response)=>{
 }
 
 export const recommendSongs =  async(req: Request, res: Response)=>{
-  return await getRecommend(1);
+  return await getRecommendation(1);
 }
