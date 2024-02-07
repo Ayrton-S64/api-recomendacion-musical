@@ -22,7 +22,15 @@ export async function getByType(isSingle: boolean){
     },
     include:{
       artist: true,
-      canciones: true,
+      canciones: {
+        include: {
+          ArtistaCancion: {
+            include: {
+              artista: true,
+            }
+          }
+        }
+      },
     }
   })
 }
